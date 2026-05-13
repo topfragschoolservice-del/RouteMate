@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RouteMate - Driver Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            color: #f5576c;
+            font-size: 28px;
+        }
+
+        .logout-btn {
+            background: #f56565;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #e53e3e;
+        }
+
+        .login-section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .login-section h2 {
+            color: #f5576c;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            max-width: 300px;
+        }
+
+        button {
+            background: #f5576c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #e63956;
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .dashboard-section {
+            display: none;
+        }
+
+        .dashboard-section.active {
+            display: block;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            color: #f5576c;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #f5576c;
+            padding-bottom: 10px;
+        }
+
+        .bus-status {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .bus-status h3 {
+            color: white;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .bus-detail {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .detail-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            opacity: 0.8;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .location-form {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .location-display {
+            background: #edf2f7;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #f5576c;
+            margin-bottom: 15px;
+        }
+
+        .location-display strong {
+            color: #f5576c;
+        }
+
+        .student-card {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #f5576c;
+        }
+
+        .student-card h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .student-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .attendance-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-top: 5px;
+            margin-right: 5px;
+        }
+
+        .status-present {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .status-absent {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        .status-unmarked {
+            background: #e2e8f0;
+            color: #2d3748;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert-success {
+            background: #c6f6d5;
+            color: #22543d;
+            border: 1px solid #9ae6b4;
+        }
+
+        .alert-error {
+            background: #fed7d7;
+            color: #742a2a;
+            border: 1px solid #fc8181;
+        }
+
+        .alert-info {
+            background: #bee3f8;
+            color: #2c5282;
+            border: 1px solid #90cdf4;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .breadcrumb {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+
+            input, select {
+                max-width: 100%;
+            }
+
+            .student-info {
+                grid-template-columns: 1fr;
+            }
+
+            .bus-detail {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚗 RouteMate - Driver Dashboard</h1>
+            <button id="logoutBtn" class="logout-btn" style="display:none;">Logout</button>
+        </header>
+
+        <!-- Login Section -->
+        <div id="loginSection" class="login-section">
+            <h2>👤 Driver Login</h2>
+            <div class="alert" id="alertMessage"></div>
+
+            <div class="form-group">
+                <label for="driverId">Select Driver:</label>
+                <select id="driverId" required>
+                    <option value="">-- Choose a Driver --</option>
+                    <option value="D001">Akram Khan (D001)</option>
+                    <option value="D002">Bilal Ahmad (D002)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="driverEmail">Email:</label>
+                <input type="email" id="driverEmail" placeholder="Enter driver email" required>
+            </div>
+
+            <button onclick="loginDriver()">Login</button>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboard" class="dashboard-section">
+            <div class="breadcrumb">
+                <span id="driverName"></span> | <span id="driverEmail"></span>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-number" id="studentCount">0</div>
+                    <div class="stat-label">Students on Bus</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="presentCount">0</div>
+                    <div class="stat-label">Present (Morning)</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="absentCount">0</div>
+                    <div class="stat-label">Absent (Morning)</div>
+                </div>
+            </div>
+
+            <!-- Bus Status Section -->
+            <div class="bus-status">
+                <h3>🚌 Bus Information</h3>
+                <div class="bus-detail">
+                    <div class="detail-item">
+                        <div class="detail-label">Bus ID</div>
+                        <div class="detail-value" id="busId">-</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Current Location</div>
+                        <div class="detail-value" id="currentLocation">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Location Update Section -->
+            <div class="card">
+                <h3>📍 Update Bus Location</h3>
+                <div class="location-form">
+                    <div class="form-group">
+                        <label for="latitude">Latitude:</label>
+                        <input type="number" id="latitude" placeholder="e.g., 31.5204" step="0.0001" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="longitude">Longitude:</label>
+                        <input type="number" id="longitude" placeholder="e.g., 74.3587" step="0.0001" required>
+                    </div>
+
+                    <button onclick="updateLocation()">Update Location</button>
+                </div>
+
+                <div class="location-display">
+                    <div>
+                        <strong>Last Known Location:</strong><br>
+                        <span id="lastLocation">Not available</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Students Section -->
+            <div class="card">
+                <h3>👥 Students on Bus</h3>
+                <div id="studentsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000';
+        let currentDriver = null;
+        let assignedBus = null;
+
+        // Initialize email suggestions
+        const driverEmails = {
+            'D001': 'akram@routemate.com',
+            'D002': 'bilal@routemate.com'
+        };
+
+        document.getElementById('driverId').addEventListener('change', function() {
+            document.getElementById('driverEmail').value = driverEmails[this.value] || '';
+        });
+
+        async function loginDriver() {
+            const driverId = document.getElementById('driverId').value;
+            const email = document.getElementById('driverEmail').value;
+
+            if (!driverId || !email) {
+                showAlert('Please select a driver and enter email', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: driverId, email })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    currentDriver = data.user;
+                    document.getElementById('loginSection').style.display = 'none';
+                    document.getElementById('dashboard').classList.add('active');
+                    document.getElementById('logoutBtn').style.display = 'block';
+                    loadDriverDashboard();
+                    showAlert('Login successful!', 'success');
+                } else {
+                    showAlert(data.message || 'Login failed', 'error');
+                }
+            } catch (error) {
+                showAlert('Error: ' + error.message, 'error');
+            }
+        }
+
+        async function loadDriverDashboard() {
+            try {
+                const response = await fetch(`${API_URL}/dashboard/driver/${currentDriver.id}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    // Update header
+                    document.getElementById('driverName').textContent = data.driver.name;
+                    document.getElementById('driverEmail').textContent = data.driver.email;
+
+                    // Update bus info
+                    document.getElementById('busId').textContent = data.busStatus.busId || 'N/A';
+                    document.getElementById('currentLocation').innerHTML =
+                        `<small>Lat: ${data.busStatus.location.latitude.toFixed(4)}<br>Lng: ${data.busStatus.location.longitude.toFixed(4)}</small>`;
+
+                    // Pre-fill location inputs
+                    document.getElementById('latitude').value = data.busStatus.location.latitude;
+                    document.getElementById('longitude').value = data.busStatus.location.longitude;
+                    document.getElementById('lastLocation').innerHTML =
+                        `<strong>Latitude:</strong> ${data.busStatus.location.latitude.toFixed(4)}<br><strong>Longitude:</strong> ${data.busStatus.location.longitude.toFixed(4)}`;
+
+                    assignedBus = data.busStatus.busId;
+
+                    // Load students
+                    loadStudents(data.students);
+
+                    // Update stats
+                    updateStats(data.students);
+                }
+            } catch (error) {
+                showAlert('Error loading dashboard: ' + error.message, 'error');
+            }
+        }
+
+        function loadStudents(studentsData) {
+            const studentsList = document.getElementById('studentsList');
+            studentsList.innerHTML = '';
+
+            const students = studentsData.studentList || [];
+            document.getElementById('studentCount').textContent = students.length;
+
+            if (students.length === 0) {
+                studentsList.innerHTML = '<p style="color: #999;">No students assigned</p>';
+                return;
+            }
+
+            students.forEach(student => {
+                const studentDiv = document.createElement('div');
+                studentDiv.className = 'student-card';
+                studentDiv.innerHTML = `
+                    <h4>${student.name}</h4>
+                    <div class="student-info">
+                        <div class="info-row">
+                            <span>Student ID:</span>
+                            <span>${student.id}</span>
+                        </div>
+                        <div class="info-row">
+                            <span>School:</span>
+                            <span>${student.school}</span>
+                        </div>
+                    </div>
+                    <div>
+                        <strong>Attendance Status:</strong><br>
+                        <span class="attendance-badge ${student.morningStatus === true ? 'status-present' : student.morningStatus === false ? 'status-absent' : 'status-unmarked'}">
+                            Morning: ${student.morningStatus === true ? 'Present' : student.morningStatus === false ? 'Absent' : 'Not Marked'}
+                        </span>
+                        <span class="attendance-badge ${student.afternoonStatus === true ? 'status-present' : student.afternoonStatus === false ? 'status-absent' : 'status-unmarked'}">
+                            Afternoon: ${student.afternoonStatus === true ? 'Present' : student.afternoonStatus === false ? 'Absent' : 'Not Marked'}
+                        </span>
+                    </div>
+                `;
+                studentsList.appendChild(studentDiv);
+            });
+        }
+
+        function updateStats(studentsData) {
+            const students = studentsData.studentList || [];
+            const present = students.filter(s => s.morningStatus === true).length;
+            const absent = students.filter(s => s.morningStatus === false).length;
+
+            document.getElementById('presentCount').textContent = present;
+            document.getElementById('absentCount').textContent = absent;
+        }
+
+        async function updateLocation() {
+            const latitude = parseFloat(document.getElementById('latitude').value);
+            const longitude = parseFloat(document.getElementById('longitude').value);
+
+            if (isNaN(latitude) || isNaN(longitude)) {
+                showAlert('Please enter valid latitude and longitude', 'error');
+                return;
+            }
+
+            if (!assignedBus) {
+                showAlert('No bus assigned', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/bus/${assignedBus}/location`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ latitude, longitude })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showAlert('Location updated successfully!', 'success');
+                    document.getElementById('lastLocation').innerHTML =
+                        `<strong>Latitude:</strong> ${latitude.toFixed(4)}<br><strong>Longitude:</strong> ${longitude.toFixed(4)}`;
+                } else {
+                    showAlert(data.message || 'Failed to update location', 'error');
+                }
+            } catch (error) {
+                showAlert('Error: ' + error.message, 'error');
+            }
+        }
+
+        function logoutDriver() {
+            fetch(`${API_URL}/auth/logout`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: currentDriver.id })
+            }).finally(() => {
+                currentDriver = null;
+                assignedBus = null;
+                document.getElementById('loginSection').style.display = 'block';
+                document.getElementById('dashboard').classList.remove('active');
+                document.getElementById('logoutBtn').style.display = 'none';
+                document.getElementById('driverId').value = '';
+                document.getElementById('driverEmail').value = '';
+                showAlert('Logged out successfully', 'success');
+            });
+        }
+
+        function showAlert(message, type) {
+            const alertDiv = document.getElementById('alertMessage');
+            alertDiv.textContent = message;
+            alertDiv.className = `alert show alert-${type}`;
+            setTimeout(() => {
+                alertDiv.classList.remove('show');
+            }, 4000);
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', logoutDriver);
+    </script>
+</body>
+</html>

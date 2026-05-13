@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RouteMate - Parent Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 28px;
+        }
+
+        .logout-btn {
+            background: #f56565;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #e53e3e;
+        }
+
+        .login-section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .login-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            max-width: 300px;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #5568d3;
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .dashboard-section {
+            display: none;
+        }
+
+        .dashboard-section.active {
+            display: block;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .student-card {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .student-card h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .student-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .attendance-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .attendance-btn {
+            flex: 1;
+            min-width: 120px;
+            padding: 8px 10px;
+            font-size: 13px;
+        }
+
+        .btn-present {
+            background: #48bb78;
+        }
+
+        .btn-present:hover {
+            background: #38a169;
+        }
+
+        .btn-absent {
+            background: #f56565;
+        }
+
+        .btn-absent:hover {
+            background: #e53e3e;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-top: 5px;
+        }
+
+        .status-present {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .status-absent {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        .status-unmarked {
+            background: #e2e8f0;
+            color: #2d3748;
+        }
+
+        .bus-info {
+            background: #edf2f7;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 13px;
+        }
+
+        .bus-info strong {
+            color: #667eea;
+        }
+
+        .payment-form {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .payment-history {
+            margin-top: 20px;
+        }
+
+        .payment-item {
+            background: #f7fafc;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            border-left: 4px solid #667eea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .payment-amount {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 16px;
+        }
+
+        .payment-status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-paid {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #78350f;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert-success {
+            background: #c6f6d5;
+            color: #22543d;
+            border: 1px solid #9ae6b4;
+        }
+
+        .alert-error {
+            background: #fed7d7;
+            color: #742a2a;
+            border: 1px solid #fc8181;
+        }
+
+        .alert-info {
+            background: #bee3f8;
+            color: #2c5282;
+            border: 1px solid #90cdf4;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #667eea;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .breadcrumb {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            input, select {
+                max-width: 100%;
+            }
+
+            .student-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚌 RouteMate - Parent Dashboard</h1>
+            <button id="logoutBtn" class="logout-btn" style="display:none;">Logout</button>
+        </header>
+
+        <!-- Login Section -->
+        <div id="loginSection" class="login-section">
+            <h2>👤 Parent Login</h2>
+            <div class="alert" id="alertMessage"></div>
+
+            <div class="form-group">
+                <label for="parentId">Select Parent:</label>
+                <select id="parentId" required>
+                    <option value="">-- Choose a Parent --</option>
+                    <option value="P001">Mr. Khan (P001)</option>
+                    <option value="P002">Mrs. Ahmed (P002)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="parentEmail">Email:</label>
+                <input type="email" id="parentEmail" placeholder="Enter parent email" required>
+            </div>
+
+            <button onclick="loginParent()">Login</button>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboard" class="dashboard-section">
+            <div class="breadcrumb">
+                <span id="parentName"></span> | <span id="parentEmail"></span>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-number" id="childrenCount">0</div>
+                    <div class="stat-label">Children</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="paidCount">0</div>
+                    <div class="stat-label">Payments Paid</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="pendingCount">0</div>
+                    <div class="stat-label">Payments Pending</div>
+                </div>
+            </div>
+
+            <!-- Attendance Section -->
+            <div class="card">
+                <h3>📋 Children Attendance</h3>
+                <div id="childrenList"></div>
+            </div>
+
+            <!-- Payment Section -->
+            <div class="card">
+                <h3>💳 Payment Management</h3>
+                <div id="paymentForm">
+                    <div class="form-group">
+                        <label for="paymentStudentId">Select Child:</label>
+                        <select id="paymentStudentId" required>
+                            <option value="">-- Choose a child --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="paymentAmount">Amount (Rs):</label>
+                        <input type="number" id="paymentAmount" placeholder="Enter amount" min="1" required>
+                    </div>
+
+                    <button onclick="makePayment()">Pay Now</button>
+                </div>
+
+                <div class="payment-history">
+                    <h4>Payment History</h4>
+                    <div id="paymentHistory"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000';
+        let currentParent = null;
+
+        // Initialize email suggestions
+        const parentEmails = {
+            'P001': 'parent1@routemate.com',
+            'P002': 'parent2@routemate.com'
+        };
+
+        document.getElementById('parentId').addEventListener('change', function() {
+            document.getElementById('parentEmail').value = parentEmails[this.value] || '';
+        });
+
+        async function loginParent() {
+            const parentId = document.getElementById('parentId').value;
+            const email = document.getElementById('parentEmail').value;
+
+            if (!parentId || !email) {
+                showAlert('Please select a parent and enter email', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: parentId, email })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    currentParent = data.user;
+                    document.getElementById('loginSection').style.display = 'none';
+                    document.getElementById('dashboard').classList.add('active');
+                    document.getElementById('logoutBtn').style.display = 'block';
+                    loadParentDashboard();
+                    showAlert('Login successful!', 'success');
+                } else {
+                    showAlert(data.message || 'Login failed', 'error');
+                }
+            } catch (error) {
+                showAlert('Error: ' + error.message, 'error');
+            }
+        }
+
+        async function loadParentDashboard() {
+            try {
+                const response = await fetch(`${API_URL}/dashboard/parent/${currentParent.id}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    // Update header
+                    document.getElementById('parentName').textContent = data.parent.name;
+                    document.getElementById('parentEmail').textContent = data.parent.email;
+
+                    // Update stats
+                    document.getElementById('childrenCount').textContent = data.children.length;
+                    document.getElementById('paidCount').textContent = data.payments.paid;
+                    document.getElementById('pendingCount').textContent = data.payments.pending;
+
+                    // Load children
+                    loadChildren(data.children);
+
+                    // Load payment options
+                    loadPaymentOptions(data.children);
+
+                    // Load payment history
+                    loadPaymentHistory();
+                }
+            } catch (error) {
+                showAlert('Error loading dashboard: ' + error.message, 'error');
+            }
+        }
+
+        function loadChildren(children) {
+            const childrenList = document.getElementById('childrenList');
+            childrenList.innerHTML = '';
+
+            children.forEach(child => {
+                const childDiv = document.createElement('div');
+                childDiv.className = 'student-card';
+                childDiv.innerHTML = `
+                    <h4>${child.studentName}</h4>
+                    <div class="student-info">
+                        <div class="info-row">
+                            <span>School:</span>
+                            <span>${child.school}</span>
+                        </div>
+                        <div class="info-row">
+                            <span>Morning:</span>
+                            <span>${getAttendanceText(child.attendance.morning)}</span>
+                        </div>
+                        <div class="info-row">
+                            <span>Afternoon:</span>
+                            <span>${getAttendanceText(child.attendance.afternoon)}</span>
+                        </div>
+                    </div>
+
+                    <div class="attendance-controls">
+                        <button class="attendance-btn btn-present" onclick="markAttendance('${child.studentId}', 'morning', true)">✓ Present (Morning)</button>
+                        <button class="attendance-btn btn-absent" onclick="markAttendance('${child.studentId}', 'morning', false)">✗ Absent (Morning)</button>
+                        <button class="attendance-btn btn-present" onclick="markAttendance('${child.studentId}', 'afternoon', true)">✓ Present (Afternoon)</button>
+                        <button class="attendance-btn btn-absent" onclick="markAttendance('${child.studentId}', 'afternoon', false)">✗ Absent (Afternoon)</button>
+                    </div>
+
+                    ${child.assignedBus ? `
+                    <div class="bus-info">
+                        <strong>🚌 Assigned Bus:</strong> ${child.assignedBus.busId}<br>
+                        <strong>Driver:</strong> ${child.assignedBus.driver}<br>
+                        <strong>Location:</strong> Lat: ${child.assignedBus.location.latitude.toFixed(4)}, Lng: ${child.assignedBus.location.longitude.toFixed(4)}
+                    </div>
+                    ` : '<div class="bus-info">No bus assigned</div>'}
+                `;
+                childrenList.appendChild(childDiv);
+            });
+        }
+
+        function getAttendanceText(status) {
+            if (status === true) return '<span class="status-badge status-present">Present</span>';
+            if (status === false) return '<span class="status-badge status-absent">Absent</span>';
+            return '<span class="status-badge status-unmarked">Not Marked</span>';
+        }
+
+        async function markAttendance(studentId, period, status) {
+            try {
+                const response = await fetch(`${API_URL}/attendance`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        parentId: currentParent.id,
+                        studentId: studentId,
+                        morningStatus: period === 'morning' ? status : null,
+                        afternoonStatus: period === 'afternoon' ? status : null
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showAlert(`Attendance marked: ${period} - ${status ? 'Present' : 'Absent'}`, 'success');
+                    loadParentDashboard();
+                } else {
+                    showAlert(data.message || 'Failed to mark attendance', 'error');
+                }
+            } catch (error) {
+                showAlert('Error: ' + error.message, 'error');
+            }
+        }
+
+        function loadPaymentOptions(children) {
+            const select = document.getElementById('paymentStudentId');
+            select.innerHTML = '<option value="">-- Choose a child --</option>';
+            children.forEach(child => {
+                const option = document.createElement('option');
+                option.value = child.studentId;
+                option.textContent = child.studentName;
+                select.appendChild(option);
+            });
+        }
+
+        async function makePayment() {
+            const studentId = document.getElementById('paymentStudentId').value;
+            const amount = document.getElementById('paymentAmount').value;
+
+            if (!studentId || !amount) {
+                showAlert('Please select a child and enter amount', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/payment`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        parentId: currentParent.id,
+                        studentId: studentId,
+                        amount: parseFloat(amount)
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showAlert(`Payment of Rs ${amount} processed! ID: ${data.paymentId}`, 'success');
+                    document.getElementById('paymentAmount').value = '';
+                    document.getElementById('paymentStudentId').value = '';
+                    loadPaymentHistory();
+                    loadParentDashboard();
+                } else {
+                    showAlert(data.message || 'Payment failed', 'error');
+                }
+            } catch (error) {
+                showAlert('Error: ' + error.message, 'error');
+            }
+        }
+
+        async function loadPaymentHistory() {
+            try {
+                const response = await fetch(`${API_URL}/payment/parent/${currentParent.id}`);
+                const data = await response.json();
+
+                const historyDiv = document.getElementById('paymentHistory');
+                historyDiv.innerHTML = '';
+
+                if (data.payments.length === 0) {
+                    historyDiv.innerHTML = '<p style="color: #999;">No payments yet</p>';
+                    return;
+                }
+
+                data.payments.forEach(payment => {
+                    const div = document.createElement('div');
+                    div.className = 'payment-item';
+                    const statusClass = payment.status === 'Paid' ? 'status-paid' : 'status-pending';
+                    div.innerHTML = `
+                        <div>
+                            <div><strong>ID:</strong> ${payment.paymentId}</div>
+                            <div><strong>Student:</strong> ${payment.studentId}</div>
+                            <div><strong>Date:</strong> ${new Date(payment.createdAt).toLocaleDateString()}</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div class="payment-amount">Rs ${payment.amount}</div>
+                            <span class="payment-status ${statusClass}">${payment.status}</span>
+                        </div>
+                    `;
+                    historyDiv.appendChild(div);
+                });
+            } catch (error) {
+                showAlert('Error loading payment history: ' + error.message, 'error');
+            }
+        }
+
+        function logoutParent() {
+            fetch(`${API_URL}/auth/logout`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: currentParent.id })
+            }).finally(() => {
+                currentParent = null;
+                document.getElementById('loginSection').style.display = 'block';
+                document.getElementById('dashboard').classList.remove('active');
+                document.getElementById('logoutBtn').style.display = 'none';
+                document.getElementById('parentId').value = '';
+                document.getElementById('parentEmail').value = '';
+                showAlert('Logged out successfully', 'success');
+            });
+        }
+
+        function showAlert(message, type) {
+            const alertDiv = document.getElementById('alertMessage');
+            alertDiv.textContent = message;
+            alertDiv.className = `alert show alert-${type}`;
+            setTimeout(() => {
+                alertDiv.classList.remove('show');
+            }, 4000);
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', logoutParent);
+    </script>
+</body>
+</html>

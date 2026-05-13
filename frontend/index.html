@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RouteMate - School Transport Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+        }
+
+        .logo {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 44px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            font-size: 18px;
+            opacity: 0.95;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            background: white;
+        }
+
+        .card-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .card-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .card-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .card-button:active {
+            transform: scale(0.98);
+        }
+
+        .features {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 40px;
+        }
+
+        .features h3 {
+            color: #667eea;
+            font-size: 28px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-item {
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .feature-item h4 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .feature-item p {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .tech-stack {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            color: white;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .tech-stack h4 {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .tech-stack p {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 32px;
+            }
+
+            .header p {
+                font-size: 16px;
+            }
+
+            .card {
+                padding: 30px 20px;
+            }
+
+            .features {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🚌</div>
+            <h1>RouteMate</h1>
+            <p>School Transport Management System</p>
+        </div>
+
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-icon">👨‍👩‍👧‍👦</div>
+                <h2>Parent Portal</h2>
+                <p>Mark attendance for your children, manage payments, and track bus location in real-time.</p>
+                <button class="card-button" onclick="window.location.href='parent.html'">Access Parent Portal</button>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">🚗</div>
+                <h2>Driver Dashboard</h2>
+                <p>View assigned students, check attendance, and update your bus location.</p>
+                <button class="card-button" onclick="window.location.href='driver.html'">Access Driver Dashboard</button>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">🗺️</div>
+                <h2>Live Tracking</h2>
+                <p>Monitor all school buses in real-time with GPS coordinates and locations.</p>
+                <button class="card-button" onclick="window.location.href='tracking.html'">View Live Tracking</button>
+            </div>
+        </div>
+
+        <div class="features">
+            <h3>✨ Key Features</h3>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">📋</div>
+                    <h4>Attendance Tracking</h4>
+                    <p>Mark morning and afternoon attendance for students</p>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">💳</div>
+                    <h4>Payment Management</h4>
+                    <p>Simulate transport fee payments and generate receipts</p>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">📍</div>
+                    <h4>GPS Tracking</h4>
+                    <p>Real-time bus location updates and tracking</p>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">👥</div>
+                    <h4>Student Management</h4>
+                    <p>View assigned students and their attendance status</p>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">📱</div>
+                    <h4>Responsive Design</h4>
+                    <p>Works on desktop, tablet, and mobile devices</p>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">🔒</div>
+                    <h4>User Authentication</h4>
+                    <p>Secure login for parents and drivers</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="tech-stack">
+            <h4>Technology Stack</h4>
+            <p>Backend: Node.js + Express | Frontend: HTML + CSS + JavaScript | Architecture: OOP Principles</p>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2024 RouteMate - Built with <span style="color: #ff6b6b;">♥</span> for School Transport Management</p>
+            <p style="margin-top: 10px;">Team: Topfrag | University OOP Project</p>
+        </div>
+    </div>
+</body>
+</html>
