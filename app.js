@@ -29,51 +29,53 @@ const dataStore = {
 };
 
 // ============================================
-// INITIALIZE SAMPLE DATA
+// INITIALIZE SAMPLE DATA - SRI LANKAN EDITION
 // ============================================
 function initializeSampleData() {
-  // Create students
-  const student1 = new Student('S001', 'Ali Khan', 'Government School');
-  const student2 = new Student('S002', 'Fatima Ahmed', 'Government School');
-  const student3 = new Student('S003', 'Hassan Ali', 'Private Academy');
-  
+  // Create students (Sinhala names)
+  const student1 = new Student('S001', 'Arjun Perera', 'Royal College Colombo');
+  const student2 = new Student('S002', 'Isuru Weerasekara', 'Royal College Colombo');
+  const student3 = new Student('S003', 'Kavya Jayasinghe', 'Sri Jayawardanapura School');
+
   dataStore.students.push(student1, student2, student3);
 
-  // Create drivers
-  const driver1 = new Driver('D001', 'Akram Khan', 'akram@routemate.com');
-  const driver2 = new Driver('D002', 'Bilal Ahmad', 'bilal@routemate.com');
-  
+  // Create drivers (Sinhala names)
+  const driver1 = new Driver('D001', 'Nilan Kumara', 'nilan@routemate.lk');
+  const driver2 = new Driver('D002', 'Roshan Silva', 'roshan@routemate.lk');
+
   driver1.login();
   driver2.login();
-  
+
   dataStore.drivers.push(driver1, driver2);
   dataStore.users.push(driver1, driver2);
 
-  // Create parents
-  const parent1 = new Parent('P001', 'Mr. Khan', 'parent1@routemate.com');
-  const parent2 = new Parent('P002', 'Mrs. Ahmed', 'parent2@routemate.com');
-  
+  // Create parents (Sinhala names)
+  const parent1 = new Parent('P001', 'Mr. Perera', 'perera@routemate.lk');
+  const parent2 = new Parent('P002', 'Mrs. Jayasinghe', 'jayasinghe@routemate.lk');
+
   parent1.addChild(student1);
   parent1.addChild(student2);
   parent2.addChild(student3);
-  
+
   parent1.login();
   parent2.login();
-  
+
   dataStore.parents.push(parent1, parent2);
   dataStore.users.push(parent1, parent2);
 
-  // Create buses and assign drivers
-  const bus1 = new Bus('B001', driver1, new Location(31.5204, 74.3587));
-  const bus2 = new Bus('B002', driver2, new Location(31.5500, 74.3500));
-  
+  // Create buses with Sri Lankan locations (Colombo, Sri Lanka coordinates)
+  // B001: Colombo Fort to Royal College
+  const bus1 = new Bus('B001', driver1, new Location(6.9271, 80.6470));
+  // B002: Colombo Central to Sri Jayawardanapura School
+  const bus2 = new Bus('B002', driver2, new Location(6.9497, 80.7891));
+
   driver1.setAssignedBus(bus1);
   driver2.setAssignedBus(bus2);
-  
+
   bus1.addStudent(student1);
   bus1.addStudent(student2);
   bus2.addStudent(student3);
-  
+
   dataStore.buses.push(bus1, bus2);
 
   console.log('✓ Sample data initialized successfully');
